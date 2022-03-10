@@ -617,17 +617,43 @@ def Decision(QR_RUT):
     if Hay_Internet == 0	:   # Hay internet
         #print Envio_Dato
         #print Envio_Dato[0]
+        #-------------------------------------------------------
 
+        Respuesta ='Error :Access denied'
+        Estado_impresos=0
+        Envio_DatoBK=Envio_Dato
+        if Envio_Dato[0] == '-':
+            """
+            Envio_Dato = Envio_Dato.replace('-',"")
+            print 'Impreso'
+            Respuesta=Envio(Envio_Dato,T_A, Estado_RQ)
+            """
+            Estado_impresos=1
+            Veri_Impreso= Verificar_Impresos(Envio_Dato)
+            if Veri_Impreso ==0 :
+                Envio_Dato = Envio_Dato.replace('-',"")
+                print 'Impreso'
+                Respuesta=Envio(Envio_Dato,T_A, Estado_RQ)
+            else:   Respuesta ='Error :Access denied'
+
+
+        else:   Respuesta=Envio(Envio_Dato,T_A, Estado_RQ)
+
+        #-------------------------------------------------------
+        print Respuesta
+        """
         if Envio_Dato[0] == '-':
             Envio_Dato = Envio_Dato.replace('-',"")
             print 'Impreso'
         #print Envio_Dato
 
         Respuesta=Envio(Envio_Dato,T_A, Estado_RQ)
+        """
         #print Respuesta
         #print Respuesta.text
         #if Respuesta!='NO': #respuesta del servidor
         if Respuesta.find("Error") == -1:
+            if Estado_impresos == 1:   Escrivir_Archivo(Envio_DatoBK, 42)   #Para guardar impresos
 
             Respuesta_Con_Internet(QR_RUT, T_A, Dato1, Respuesta, Dato2)
             Hay_Internet = 0
