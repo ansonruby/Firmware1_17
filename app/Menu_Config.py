@@ -43,7 +43,7 @@ tk = Tk()
 tk.geometry("320x480")
 tk.geometry("+%d+%d" % (0,0))
 #tk.config(background='Dark gray')
-#tk.attributes("-fullscreen",True)
+tk.attributes("-fullscreen",True)
 
 
 Fuente=("Arial",14,'bold')
