@@ -1,7 +1,7 @@
 # Firmware1_17
 # Madre : Firmware 1_14
 # Para  : solutions.fusepong.com
-# 
+#
 # Generador de pines
 # Comunicacion entre dispositivos
 # Actualizador
