@@ -64,6 +64,7 @@ CE_rl =[        "/api/access/keyboard_access/index.php",      # Enviar Teclado
 #ID_Tarjeta          = 'ABDB01062020b827eb929bfb000002' # dispositivo SL_CHI_34
 #ID_Tarjeta         = 'ABDB12022020b827eb36f4c1000023' # dispositivo SL_CHI_3
 #ID_Tarjeta         = 'CCCB23102020b827ebc30bd7000001' # dispositivo IF_CHI_01
+ID_Tarjeta         = 'ABDE12102021b827eb6f1974000015' # dispositivo CF_COL_15
 #Dominio_Servidor   = 'sportlife.fuseaccess.com'         # Servidor
 #IP_servidor        = 'http://192.168.1.109'            #servidor de pruebas local
 #IP_servidor         = 'http://192.168.1.113'         # PC
@@ -98,7 +99,7 @@ def Get_Post_try_catch(peticion, CE_url, CE_datos, CE_cabeceras, tout):
         if peticion == 'GET' : CE_peticion = requests.get(CE_url, data=CE_datos, headers=CE_cabeceras, timeout=tout)
         if peticion == 'POST': CE_peticion = requests.post(CE_url, data=CE_datos, headers=CE_cabeceras, timeout=tout)
         if peticion == 'GET_SIN_PARAMETROS': CE_peticion = requests.get(CE_url, timeout=tout)
-        if peticion == 'GET_SOLO_CABECERA': CE_peticion = requests.get(CE_url, headers=CE_cabeceras, timeout=2)
+        if peticion == 'GET_SOLO_CABECERA': CE_peticion = requests.get(CE_url, headers=CE_cabeceras, timeout=tout)
         #print CE_peticion
         if CE_peticion.status_code == 200:
             Texto = CE_peticion.text
@@ -157,7 +158,7 @@ def Confimacion_Firmware(T_actual, vercion_Actual_Firmware,LOG):
     print CE_datos
     #CE_datos ='{"version":"2019.12.3.0","update":"1"}'#Formato actualisacion correcta
     #CE_datos ='{"version":"2019.12.3.0","update":"0","log":"2.3 herror ...."}' #Formato herror
-    return Get_Post_try_catch('POST', CE_url, CE_datos, CE_cabeceras, 2)
+    return Get_Post_try_catch('POST', CE_url, CE_datos, CE_cabeceras, 4)
 
 
 def Veri_Firmware(T_actual, vercion_Actual_Firmware):
@@ -189,7 +190,7 @@ def Veri_Firmware(T_actual, vercion_Actual_Firmware):
     if P_Mensajes:
         print 'Datos :'+ CE_datos
 
-    return Get_Post_try_catch('GET', CE_url, CE_datos, CE_cabeceras, 2)
+    return Get_Post_try_catch('GET', CE_url, CE_datos, CE_cabeceras, 4)
 
 
 def ping ():
@@ -210,7 +211,7 @@ def ping ():
             print '-------------------------------------'
             print 'URL :'+ CE_url
 
-        return Get_Post_try_catch('GET_SIN_PARAMETROS', CE_url, '', '', 1)
+        return Get_Post_try_catch('GET_SIN_PARAMETROS', CE_url, '', '', 2)
 
 
 def envio(dat,T_actual,QR_Te):
@@ -250,7 +251,7 @@ def envio(dat,T_actual,QR_Te):
             print 'URL :'+ CE_url
             print 'Datos :'+ CE_datos
 
-        return Get_Post_try_catch('POST', CE_url, CE_datos, CE_cabeceras, 2)
+        return Get_Post_try_catch('POST', CE_url, CE_datos, CE_cabeceras, 4)
 
 
 def Usuarios_Activos(T_actual):
@@ -270,11 +271,11 @@ def Usuarios_Activos(T_actual):
 
         if P_Mensajes:
             print '-------------------------------------'
-            print 'Usuarios_Activos'
+            print 'Usuarios_Activos M'
             print '-------------------------------------'
             print 'URL :'+ CE_url
 
-        return Get_Post_try_catch('GET_SOLO_CABECERA', CE_url,'', CE_cabeceras, 2)
+        return Get_Post_try_catch('GET_SOLO_CABECERA', CE_url,'', CE_cabeceras, 500)
 
 
 
@@ -301,7 +302,7 @@ def Test_IP_Dominio (IP, Protoc):
 
         print 'URL :'+ CE_url
 
-        return Get_Post_try_catch('GET_SIN_PARAMETROS', CE_url, '', '', 1)
+        return Get_Post_try_catch('GET_SIN_PARAMETROS', CE_url, '', '', 2)
 
         """
         try:

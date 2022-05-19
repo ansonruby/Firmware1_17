@@ -149,7 +149,7 @@ def Intentos_Actualizar_Usuarios(Cantidad):
         else:
             if PP_Mensajes:
                 print 'NO actualizo'
-    Generar_PIN(Cantidad_Pines)
+    #Generar_PIN(Cantidad_Pines)
     Cambio_Estado_Led('6')
 
 
@@ -233,7 +233,7 @@ def actualizar_usuarios_por():
         else:
             if PP_Mensajes:
                 print "No se puedo Actualizar por"
-            print Us_acti
+            #print Us_acti      ##
             return -1
 
 
@@ -281,7 +281,7 @@ def Actualizar_Usuarios(Hora_Actualizacion):
             #Generar_PIN(4)
         elif Hora() == Hora_Actualizacion and E_Actualizacion == 0:
             Procedimiento_Actualizar_Usuarios()
-            Generar_PIN(Cantidad_Pines)
+            #Generar_PIN(Cantidad_Pines)
             Borrar(27)
 
         if Hora() != Hora_Actualizacion and A_Actualizacion==0:
@@ -338,8 +338,8 @@ def Decision_Torniquete (Res, QR, ID2, Ti,Qr_Te, I_N_S ):
     Res=Res.rstrip('\r')#se coloca para pruebas
     #c
     if Res == 'Access granted-E':
-        #if PP_Mensajes:
-        print "Entrada, estado 3"
+        if PP_Mensajes:
+            print "Entrada, estado 3"
         if Direc_Torniquete == 'D':
             Cambio_Estado_Led('4')
             Salir()
@@ -361,8 +361,8 @@ def Decision_Torniquete (Res, QR, ID2, Ti,Qr_Te, I_N_S ):
 
 
     elif Res == 'Access granted-S':
-        #if PP_Mensajes:
-        print "Salida, estado 4"
+        if PP_Mensajes:
+            print "Salida, estado 4"
         if Direc_Torniquete == 'D':
             Cambio_Estado_Led('3')
             Entrar()
@@ -386,7 +386,7 @@ def Decision_Torniquete (Res, QR, ID2, Ti,Qr_Te, I_N_S ):
     else :
         if PP_Mensajes:
             print "No Esta  activo"
-        print "Sin Acceso o rut equivocado estado 5 0 6"
+        #print "Sin Acceso o rut equivocado estado 5 0 6"
 
         Cambio_Estado_Led('6')  # realisa un tiempo de visualisacion
 
@@ -408,7 +408,7 @@ def Respuesta_Sin_Internet(QR_RUT, T_A,  IDQ_Encrip, QR):
 
     global Cantidad_Pines
     if QR_RUT == 'QR':
-        print QR
+        #print QR
         if PP_Mensajes:
             print "Respuesta QR, sin internet:"
         Cambio_Estado_Led('7')
@@ -420,7 +420,7 @@ def Respuesta_Sin_Internet(QR_RUT, T_A,  IDQ_Encrip, QR):
         Resp ='Denegar'
         #sepraracion para guardar dators o berificar si tien el -
         if QR[0] == '-':
-            print 'Impreso'
+            #print 'Impreso'
             #Guardar el QR impreso
             Veri_Impreso= Verificar_Impresos(QR)
             if Veri_Impreso ==0 :
@@ -432,7 +432,7 @@ def Respuesta_Sin_Internet(QR_RUT, T_A,  IDQ_Encrip, QR):
 
         else:   IDQ_Encrip, Resp = Estado_Usuario(IDQ_Encrip,1)
         #print '----- resolviendo respuesta'
-        print 'Resp:'+ Resp
+        #print 'Resp:'+ Resp
         #-------------------------------------------------------------------
         #-------------------------------------------------------------------
 
@@ -632,7 +632,7 @@ def Decision(QR_RUT):
             Veri_Impreso= Verificar_Impresos(Envio_Dato)
             if Veri_Impreso ==0 :
                 Envio_Dato = Envio_Dato.replace('-',"")
-                print 'Impreso'
+                #print 'Impreso'
                 Respuesta=Envio(Envio_Dato,T_A, Estado_RQ)
             else:   Respuesta ='Error :Access denied'
 
@@ -640,7 +640,7 @@ def Decision(QR_RUT):
         else:   Respuesta=Envio(Envio_Dato,T_A, Estado_RQ)
 
         #-------------------------------------------------------
-        print Respuesta
+        #print Respuesta
         """
         if Envio_Dato[0] == '-':
             Envio_Dato = Envio_Dato.replace('-',"")
@@ -780,7 +780,8 @@ def Actualizar_Firmware(Hora_Actualizacion):
                 #antes de enviar respues actualizar el actualizador
                 Actualizar_Actualizador()
 
-                print Confimacion_Firmware(Tiempo(), Leer_Archivo(17).replace('\n',''),'')
+                #print
+                Confimacion_Firmware(Tiempo(), Leer_Archivo(17).replace('\n',''),'')
 
         if Leer_Archivo(20) == '5':
             Ultimo = ""
@@ -806,7 +807,8 @@ def Actualizar_Firmware(Hora_Actualizacion):
             Borrar(19)                  # log
             if PP_Mensajes:
                 print Ultimo
-            print Confimacion_Firmware(Tiempo(), Leer_Archivo(17).replace('\n',''),Ultimo)
+            #print
+            Confimacion_Firmware(Tiempo(), Leer_Archivo(17).replace('\n',''),Ultimo)
 
 
 
@@ -820,7 +822,7 @@ def Actualizar_Actualizador():
         if PP_Mensajes:
             print 'Eliminar BK'
         res = commands.getoutput('sudo rm -R' + ' /home/pi/ActualizadorBK')
-        print res
+        #print res
 
     res = commands.getoutput('mv /home/pi/Actualizador /home/pi/ActualizadorBK')
     res = commands.getoutput('cp -r /home/pi/Firmware/Actualizador /home/pi/Actualizador')
