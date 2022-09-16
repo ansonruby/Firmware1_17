@@ -70,6 +70,7 @@ Borrar_BD               = lib.Control_Switch.Borrar_BD
 
 # inicio de variable	--------------------------------------
 PP_Mensajes = 0     # 0: NO print  1: Print
+COMODIN = 0
 
 
 Direc_Torniquete = Leer_Estado(13)  #print Direc_Torniquete
@@ -315,7 +316,7 @@ def Ping_Intento_Enviar_Usuarios_Autotizados():
             Hay_Internet = 1
             Escrivir_Estados('1',28)#estado comunicaion servidor
             Estado_Internet = 0
-        actualizar_usuarios_por();# colocar esta consula 30_05_2019, 16_12_2020:puede demoar demaciado
+        #actualizar_usuarios_por();# colocar esta consula 30_05_2019, 16_12_2020:puede demoar demaciado
     else:
         if PP_Mensajes:
             print 'NO hay internet, se sige aurorizando'
@@ -407,6 +408,9 @@ def Get_QR_RUT(QR_RUT):
 def Respuesta_Sin_Internet(QR_RUT, T_A,  IDQ_Encrip, QR):
 
     global Cantidad_Pines
+    global COMODIN
+    if PP_Mensajes: print 'Estado comodin :'
+    if PP_Mensajes: print COMODIN
     if QR_RUT == 'QR':
         #print QR
         if PP_Mensajes:
@@ -438,6 +442,7 @@ def Respuesta_Sin_Internet(QR_RUT, T_A,  IDQ_Encrip, QR):
 
         puntos = QR.count(".")
         if PP_Mensajes:
+            print 'puntos dentro:'
             print puntos
 
         if puntos == 3:
@@ -474,6 +479,10 @@ def Respuesta_Sin_Internet(QR_RUT, T_A,  IDQ_Encrip, QR):
                     if PP_Mensajes:
                         print 'Permitir salida'
                     Decision_Torniquete (Resp,QR,"",T_A,'1','1')
+        elif puntos == 4:
+            if COMODIN == 1:
+                Decision_Torniquete ('Access granted-E', QR, "", T_A, '1', '1')
+
         else:
                 Decision_Torniquete (Resp, QR, "", T_A, '1', '1')
 
@@ -546,6 +555,8 @@ def Respuesta_Con_Internet(QR_RUT, T_A,  IDT, Respuesta, QR):
 def Decision(QR_RUT):
 
     global Hay_Internet
+    global COMODIN
+    COMODIN =0
 
     T_A = Tiempo()
     if PP_Mensajes:
@@ -587,6 +598,11 @@ def Decision(QR_RUT):
         Escrivir_Estados('1',6)# activar sonido por 500*2
         R_Q = Get_QR_RUT('QR')
         #print R_Q
+        #print 'cantidad puntos:'
+        puntos_QR= R_Q.count(".")
+        if puntos_QR == 4:
+            COMODIN = 1
+
         s =R_Q.partition(".")
         QRT = s[0]
         IDQ = s[2]
@@ -594,11 +610,13 @@ def Decision(QR_RUT):
         #print IDQ
         if IDQ.find(".") == -1: ID_Tratado = IDQ
         else:
+
             if PP_Mensajes:
                 print 'Invitacion'
             #tratamiento de tatos aqui o mas adentro pero solo si no hay inthernet
             s =IDQ.partition(".")
-            ID_Tratado = s[0]
+            ID_Tratado = s[0]  #Comodin///
+
             if PP_Mensajes:
                 print 'separacion'
                 print 'IDQ:' + ID_Tratado
@@ -614,6 +632,7 @@ def Decision(QR_RUT):
 
     # Decision dependiendo del estado del internet
     #Hay_Internet =1 # /////////////////////////// hojo comentar
+    #Hay_Internet = 0
     if Hay_Internet == 0	:   # Hay internet
         #print Envio_Dato
         #print Envio_Dato[0]
@@ -649,7 +668,7 @@ def Decision(QR_RUT):
 
         Respuesta=Envio(Envio_Dato,T_A, Estado_RQ)
         """
-        #print Respuesta
+        print Respuesta
         #print Respuesta.text
         #if Respuesta!='NO': #respuesta del servidor
         if Respuesta.find("Error") == -1:
@@ -950,6 +969,7 @@ Intentos_Actualizar_Usuarios(3)
 
 
 while 1:
+    Hay_Internet = 0
     #------------------if PP_Mensajes:---------------------------------------
     #  Proceso 0: Tiempo de espera para disminuir proceso
     #---------------------------------------------------------
@@ -981,6 +1001,7 @@ while 1:
     #if Leer_Estado(4) == '1':   # Hay un RUT sin procesar
     #    Decision('RUT')
     #    Borrar(4)               #final del proceso
+
     #---------------------------------------------------------
     # Proceso 4: Procesamiento del QR
     #---------------------------------------------------------
@@ -990,6 +1011,7 @@ while 1:
     #---------------------------------------------------------
     # Proceso 5: enviar usario autorizados sin internet, cuando hay internet y actualizar si no se pudo
     #---------------------------------------------------------
+    """
     if Hay_Internet == 0 and Estado_Internet == 0:
         Estado_Internet =1;
         # hay internet y se verifico
@@ -1007,6 +1029,7 @@ while 1:
             else:
                 if PP_Mensajes:
                     print 'no se apodifo se espera otra opertunidad'
+    """
     #---------------------------------------------------------
     # Proceso 6: Actualizacion de firmware
     #---------------------------------------------------------
